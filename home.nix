@@ -41,6 +41,7 @@
 
       # 起動時に実行
       exec-once = [
+        "fcitx5 -d"
         "awww-daemon"
         "waybar"
         "mako"
@@ -54,8 +55,8 @@
         "col.active_border" = "rgb(89b4fa) rgb(cba6f7) 45deg";
         "col.inactive_border" = "rgb(313244)";
         layout = "dwindle";
-        resize_on_border = true;       # ボーダーをドラッグしてリサイズ
-        hover_icon_on_border = true;   # リサイズ時カーソル変更
+        resize_on_border = true;
+        hover_icon_on_border = true;
       };
 
       decoration = {
@@ -101,14 +102,6 @@
         };
       };
 
-      # ── タッチパッドジェスチャー ──
-      gestures = {
-        workspace_swipe = true;
-        workspace_swipe_fingers = 3;
-        workspace_swipe_distance = 300;
-        workspace_swipe_cancel_ratio = "0.3";
-      };
-
       dwindle = {
         preserve_split = true;
         smart_split = false;
@@ -120,7 +113,6 @@
         disable_hyprland_logo = true;
         disable_splash_rendering = true;
         focus_on_activate = true;
-        new_window_takes_over_fullscreen = 2;
       };
 
       # ── グループ（タブ化ウィンドウ） ──
@@ -137,57 +129,8 @@
         };
       };
 
-      # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      #  ウィンドウルール（自動フロート等）
-      # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      windowrule = [
-        # ── ダイアログ・ポップアップ → 自動フロート ──
-        "float, class:^(pavucontrol)$"
-        "size 700 500, class:^(pavucontrol)$"
-        "center, class:^(pavucontrol)$"
-
-        "float, class:^(nm-connection-editor)$"
-        "float, class:^(blueman-manager)$"
-
-        "float, title:^(Open File)(.*)$"
-        "float, title:^(Save As)(.*)$"
-        "float, title:^(Open Folder)(.*)$"
-        "float, title:^(Confirm)(.*)$"
-        "float, title:^(File Operation)(.*)$"
-        "float, title:^(About .*)$"
-        "float, title:^(Properties)(.*)$"
-
-        # ── Picture-in-Picture → フロート＋ピン（常に前面） ──
-        "float, title:^(Picture-in-Picture)$"
-        "pin, title:^(Picture-in-Picture)$"
-        "size 480 270, title:^(Picture-in-Picture)$"
-        "move 100%-490 40, title:^(Picture-in-Picture)$"
-
-        # ── btop → フロートで中央表示 ──
-        "float, class:^(kitty)$,title:^(btop)$"
-        "size 1000 650, class:^(kitty)$,title:^(btop)$"
-        "center, class:^(kitty)$,title:^(btop)$"
-
-        # ── XWaylandのコンテキストメニュー修正 ──
-        "noblur, class:^()$,title:^()$,xwayland:1"
-
-        # ── ワークスペース5 → フローティング専用 ──
-        "float, workspace:5"
-        "size 900 600, workspace:5"
-        "center, workspace:5"
-
-        # ── フローティングウィンドウの見た目調整 ──
-        "opacity 0.95 0.88, floating:1"
-
-        # ── maximize イベントの抑制 ──
-        "suppressevent maximize, class:.*"
-      ];
-
-      # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      #  ワークスペースルール
-      # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      # ── ワークスペースルール ──
       workspace = [
-        # ワークスペース5の名前（フローティング専用）
         "5, defaultFloat:true"
       ];
 
@@ -198,38 +141,38 @@
         # ── 基本操作 ──
         "$mod, Return, exec, $terminal"
         "$mod, Q, killactive"
-        "$mod SHIFT, M, exit"              # 誤操作防止のため SHIFT 追加
+        "$mod SHIFT, M, exit"
         "$mod, E, exec, nautilus"
         "$mod, Space, exec, $menu"
-        "$mod, F, fullscreen, 0"           # フルスクリーン（全画面）
-        "$mod SHIFT, F, fullscreen, 1"     # 最大化（バーとギャップ維持）
+        "$mod, F, fullscreen, 0"
+        "$mod SHIFT, F, fullscreen, 1"
 
         # ── フローティング操作 ──
-        "$mod, V, togglefloating"          # タイル ↔ フロート切替
-        "$mod, C, centerwindow"            # フロートウィンドウを中央に
-        "$mod, P, pin"                     # 常に前面に固定（PiP等）
+        "$mod, V, togglefloating"
+        "$mod, C, centerwindow"
+        "$mod, P, pin"
 
         # ── フォーカス移動 ──
         "$mod, left, movefocus, l"
         "$mod, right, movefocus, r"
         "$mod, up, movefocus, u"
         "$mod, down, movefocus, d"
-        "$mod, Tab, cyclenext"             # 次のウィンドウ
-        "$mod SHIFT, Tab, cyclenext, prev" # 前のウィンドウ
+        "$mod, Tab, cyclenext"
+        "$mod SHIFT, Tab, cyclenext, prev"
 
-        # ── ウィンドウ移動（タイル：スワップ / フロート：自由移動） ──
+        # ── ウィンドウ移動 ──
         "$mod SHIFT, left, movewindow, l"
         "$mod SHIFT, right, movewindow, r"
         "$mod SHIFT, up, movewindow, u"
         "$mod SHIFT, down, movewindow, d"
 
         # ── dwindle レイアウト操作 ──
-        "$mod, S, layoutmsg, togglesplit"  # 分割方向を切替
+        "$mod, S, layoutmsg, togglesplit"
 
         # ── グループ（タブ化） ──
-        "$mod, G, togglegroup"                  # グループ作成/解除
-        "$mod, N, changegroupactive, f"         # 次のタブ
-        "$mod SHIFT, N, changegroupactive, b"   # 前のタブ
+        "$mod, G, togglegroup"
+        "$mod, N, changegroupactive, f"
+        "$mod SHIFT, N, changegroupactive, b"
 
         # ── リサイズモード（Submap） ──
         "$mod, R, submap, resize"
@@ -296,8 +239,7 @@
       ];
     };
 
-    # ── リサイズ Submap（settingsでは表現できないため extraConfig） ──
-    # SUPER+R で入る → 矢印キーでリサイズ → Escape/Enter で抜ける
+    # ── リサイズ Submap ──
     extraConfig = ''
       submap = resize
       binde = , right, resizeactive, 40 0

@@ -43,6 +43,30 @@
     LC_TIME = "en_GB.UTF-8";
   };
 
+  i18n.inputMethod = {
+   enable = true;
+   type = "fcitx5";
+   fcitx5 = {
+    waylandFrontend = true;
+    addons = with pkgs; [
+     fcitx5-mozc
+     fcitx5-gtk
+    ];
+   };
+  };
+
+  i18n.inputMethod.fcitx5.settings.inputMethod = {
+  GroupOrder."0" = "Default";
+  "Groups/0" = {
+    Name = "Default";
+    "Default Layout" = "gb";
+    DefaultIM = "keyboard-gb";
+  };
+  "Groups/0/Items/0".Name = "keyboard-gb";
+  "Groups/0/Items/1".Name = "mozc";
+};
+i18n.inputMethod.fcitx5.ignoreUserConfig = true;
+
   # Enable the X11 windowing system.
   # You can disable this if you're only using the Wayland session.
   services.xserver.enable = true;
@@ -106,6 +130,7 @@
   #  wget
   git
   bottles
+  claude-code
   ];
 
   services.displayManager.sddm.enable = true;
