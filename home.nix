@@ -28,6 +28,20 @@
     nautilus          # ファイルマネージャ
   ];
 
+  # ── Zsh ──
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    autosuggestion.enable = true;
+    syntaxHighlighting.enable = true;
+    history.size = 10000;
+    shellAliases = {
+      ls = "eza";
+      ll = "eza -la";
+      rebuild = "sudo nixos-rebuild switch --flake /etc/nixos#eitaar-nix";
+    };
+  };
+
   # ── Hyprland ──
   wayland.windowManager.hyprland = {
     enable = true;

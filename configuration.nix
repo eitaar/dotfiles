@@ -24,7 +24,24 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
-
+  nix.buildMachines = [{
+    hostName = "10.87.83.25";
+    system = "x86_64-linux";
+    sshUser = "root";
+    sshKey = "/root/.ssh/nix-builder";
+    maxJobs = 8;
+    speedFactor = 3;
+    supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" ];
+  }];
+  nix.distributedBuilds = true;
+  nix.settings.builders-use-substitutes = true;
+  nix.extraOptions = ''
+    builders = @/etc/nix/machines
+  '';
+  programs.ssh.extraConfig = ''
+    Host 10.87.83.25
+      Port 2222
+  '';
   # Set your time zone.
   time.timeZone = "Europe/London";
 
@@ -104,9 +121,12 @@ i18n.inputMethod.fcitx5.ignoreUserConfig = true;
   # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
+  programs.zsh.enable = true;
+
   users.users."eitaar" = {
     isNormalUser = true;
     description = "eitaar";
+    shell = pkgs.zsh;
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
       kdePackages.kate
@@ -116,6 +136,11 @@ i18n.inputMethod.fcitx5.ignoreUserConfig = true;
 
   # Install firefox.
   programs.firefox.enable = true;
+
+  programs.helium = {
+    enable = true;
+    flags = [ "--ozone-platform-hint=auto" ];
+  };
 
   programs.hyprland.enable = true;
 
@@ -169,6 +194,7 @@ i18n.inputMethod.fcitx5.ignoreUserConfig = true;
   # networking.firewall.enable = false;
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix.settings.max-jobs = 1;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
