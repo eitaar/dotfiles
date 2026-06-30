@@ -1,10 +1,10 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
   home.username = "eitaar";
   home.homeDirectory = "/home/eitaar";
   home.stateVersion = "24.11";
-
+  imports = [inputs.ags.homeManagerModules.default];
   home.packages = with pkgs; [
     # CLI
     ripgrep fd eza btop fastfetch
@@ -28,6 +28,26 @@
     nautilus          # ファイルマネージャ
   ];
 
+  programs.ags = {
+    enable = true;
+    extraPackages = with pkgs; [
+      inputs.astal.packages.${pkgs.system}.apps
+      inputs.astal.packages.${pkgs.system}.battery
+      inputs.astal.packages.${pkgs.system}.mpris
+      inputs.astal.packages.${pkgs.system}.network
+      inputs.astal.packages.${pkgs.system}.notifd
+      inputs.astal.packages.${pkgs.system}.powerprofiles
+      inputs.astal.packages.${pkgs.system}.tray
+      inputs.astal.packages.${pkgs.system}.wireplumber
+      fzf
+    ];
+  };
+  home.pointerCursor = {
+    name = "breeze_cursors";
+    package = pkgs.kdePackages.breeze;
+    size = 24;
+    gtk.enable = true;
+  };
   # ── Zsh ──
   programs.zsh = {
     enable = true;
@@ -58,7 +78,6 @@
         "fcitx5 -d"
         "awww-daemon"
         "waybar"
-        "mako"
         "nm-applet --indicator"
       ];
 
@@ -393,16 +412,6 @@
   };
 
   # ── 通知 ──
-  services.mako = {
-    enable = true;
-    settings = {
-      border-radius = 8;
-      border-size = 2;
-      border-color = "#89b4fa";
-      background-color = "#1e1e2eee";
-      text-color = "#cdd6f4";
-      default-timeout = 5000;
-      font = "JetBrainsMono Nerd Font 11";
-    };
-  };
+  # shoji-bar-2 が AstalNotifd ベースの通知ポップアップを持つため無効化
+  services.mako.enable = false;
 }

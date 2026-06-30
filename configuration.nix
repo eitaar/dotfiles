@@ -44,6 +44,9 @@
   '';
   # Set your time zone.
   time.timeZone = "Europe/London";
+  environment.shellAliases = {
+   nrs = "sudo nixos-rebuild switch --flake /etc/nixos#eitaar-nix";
+  };
 
   # Select internationalisation properties.
   i18n.defaultLocale = "ja_JP.UTF-8";
@@ -101,6 +104,11 @@ i18n.inputMethod.fcitx5.ignoreUserConfig = true;
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
+  # Bluetooth
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+  services.blueman.enable = true;
+
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
@@ -122,7 +130,6 @@ i18n.inputMethod.fcitx5.ignoreUserConfig = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   programs.zsh.enable = true;
-
   users.users."eitaar" = {
     isNormalUser = true;
     description = "eitaar";
@@ -156,6 +163,7 @@ i18n.inputMethod.fcitx5.ignoreUserConfig = true;
   git
   bottles
   claude-code
+  nodejs
   ];
 
   services.displayManager.sddm.enable = true;
