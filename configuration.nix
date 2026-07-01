@@ -44,10 +44,6 @@
   '';
   # Set your time zone.
   time.timeZone = "Europe/London";
-  environment.shellAliases = {
-   nrs = "sudo nixos-rebuild switch --flake /etc/nixos#eitaar-nix";
-  };
-
   # Select internationalisation properties.
   i18n.defaultLocale = "ja_JP.UTF-8";
 
@@ -149,14 +145,15 @@ i18n.inputMethod.fcitx5.ignoreUserConfig = true;
     flags = [ "--ozone-platform-hint=auto" ];
   };
 
-  programs.hyprland.enable = true;
-
-
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
+  environment.shellAliases = {
+    nrs = "sudo nixos-rebuild switch --flake /etc/nixos#eitaar-nix";
+  };
+
   environment.systemPackages = with pkgs; [
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
   #  wget
@@ -164,6 +161,7 @@ i18n.inputMethod.fcitx5.ignoreUserConfig = true;
   bottles
   claude-code
   nodejs
+  ffmpeg
   ];
 
   services.displayManager.sddm.enable = true;
@@ -176,11 +174,6 @@ i18n.inputMethod.fcitx5.ignoreUserConfig = true;
     jetbrains-mono
     nerd-fonts.jetbrains-mono
   ];
-
-  xdg.portal = {
-    enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
-  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
