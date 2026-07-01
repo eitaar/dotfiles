@@ -8,11 +8,11 @@
   home.packages = with pkgs; [
     # CLI
     ripgrep fd eza btop fastfetch
-
+    pkgs.zed-editor
     # アプリ
-    firefox
     kitty
-    nautilus          # ファイルマネージャ
+    vscode
+    discord
   ];
 
   programs.ags = {
@@ -73,6 +73,13 @@
       color7 = "#bac2de";
     };
   };
+
+  # ── Electron Wayland フラグ ──
+  xdg.configFile."electron-flags.conf".text = ''
+    --enable-features=UseOzonePlatform
+    --ozone-platform=wayland
+    --enable-wayland-ime
+  '';
 
   # ── 通知 ──
   # shoji-bar-2 が AstalNotifd ベースの通知ポップアップを持つため無効化

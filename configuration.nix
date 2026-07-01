@@ -12,6 +12,7 @@
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.consoleMode = "max";
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "eitaar-nix"; # Define your hostname.
@@ -85,7 +86,7 @@ i18n.inputMethod.fcitx5.ignoreUserConfig = true;
 
   # Enable the X11 windowing system.
   # You can disable this if you're only using the Wayland session.
-  services.xserver.enable = true;
+  services.xserver.enable = false;
 
 
   # Configure keymap in X11
@@ -153,6 +154,10 @@ i18n.inputMethod.fcitx5.ignoreUserConfig = true;
   environment.shellAliases = {
     nrs = "sudo nixos-rebuild switch --flake /etc/nixos#eitaar-nix";
   };
+  environment.sessionVariables =  {
+    NIXOS_OZONE_WL = "1";
+    FREETYPE_PROPERTIES = "cff:no-stem-darkening=0 autofitter:no-stem-darkening=0";
+  };
 
   environment.systemPackages = with pkgs; [
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
@@ -162,10 +167,209 @@ i18n.inputMethod.fcitx5.ignoreUserConfig = true;
   claude-code
   nodejs
   ffmpeg
+  swappy
+  hyprshot
   ];
 
-  services.displayManager.sddm.enable = true;
-  services.displayManager.sddm.wayland.enable = true;
+  programs.regreet = {
+    enable = true;
+    font = {
+      package = pkgs.nerd-fonts.jetbrains-mono;
+      name = "JetBrainsMono Nerd Font";
+      size = 10;
+    };
+    cursorTheme = {
+      package = pkgs.kdePackages.breeze;
+      name = "breeze_cursors";
+    };
+    settings = {
+      background = {
+        path = "${./wallpaper.png}";
+        fit = "Cover";
+      };
+      skip_selection = true;
+      GTK.application_prefer_dark_theme = true;
+      appearance = {
+        greeting_msg = "";
+        clock.format = "%H:%M";
+      };
+    };
+    extraCss = ''
+      window, window.background {
+        background-color: transparent;
+      }
+
+      box, frame, grid {
+        background-color: transparent;
+        border: none;
+        box-shadow: none;
+      }
+
+      frame.background {
+        background-color: rgba(18, 18, 18, 0.72);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 24px;
+        padding: 36px 40px;
+        box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+      }
+
+      label {
+        color: rgba(255, 255, 255, 0.90);
+      }
+
+      #message_label {
+        font-size: 1px;
+        color: transparent;
+        min-height: 0;
+        padding: 0;
+        margin: 0;
+      }
+
+      entry {
+        background: rgba(255, 255, 255, 0.06);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.10);
+        border-radius: 14px;
+        padding: 10px 18px;
+        min-height: 20px;
+        box-shadow: none;
+      }
+
+      entry:focus {
+        background: rgba(255, 255, 255, 0.10);
+        border-color: rgba(255, 255, 255, 0.28);
+        box-shadow: none;
+      }
+
+      passwordentry {
+        background: rgba(255, 255, 255, 0.06);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.10);
+        border-radius: 14px;
+        padding: 6px 18px;
+        min-height: 20px;
+        box-shadow: none;
+      }
+
+      passwordentry:focus-within {
+        background: rgba(255, 255, 255, 0.10);
+        border-color: rgba(255, 255, 255, 0.28);
+        box-shadow: none;
+      }
+
+      passwordentry entry {
+        background: transparent;
+        border: none;
+        box-shadow: none;
+      }
+
+      combobox button.combo {
+        background: rgba(255, 255, 255, 0.06);
+        color: rgba(255, 255, 255, 0.85);
+        border: 1px solid rgba(255, 255, 255, 0.10);
+        border-radius: 14px;
+        box-shadow: none;
+        min-height: 20px;
+      }
+
+      combobox button.combo:hover {
+        background: rgba(255, 255, 255, 0.10);
+        border-color: rgba(255, 255, 255, 0.18);
+      }
+
+      popover contents {
+        background-color: rgba(18, 18, 18, 0.94);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 14px;
+      }
+
+      button.suggested-action {
+        background: rgba(255, 255, 255, 0.10);
+        color: rgba(255, 255, 255, 0.92);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 14px;
+        padding: 10px 28px;
+        font-weight: bold;
+        min-height: 20px;
+        box-shadow: none;
+      }
+
+      button.suggested-action:hover {
+        background: rgba(255, 255, 255, 0.18);
+        border-color: rgba(255, 255, 255, 0.16);
+        box-shadow: none;
+      }
+
+      button.suggested-action:active {
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      button#cancel_button, button.flat {
+        background: transparent;
+        color: rgba(255, 255, 255, 0.28);
+        border: none;
+        box-shadow: none;
+        font-size: 9px;
+      }
+
+      button#cancel_button:hover, button.flat:hover {
+        color: rgba(255, 255, 255, 0.55);
+      }
+
+      button.destructive-action {
+        background: transparent;
+        color: rgba(255, 255, 255, 0.32);
+        border: none;
+        box-shadow: none;
+        padding: 6px 14px;
+        font-size: 9px;
+      }
+
+      button.destructive-action:hover {
+        color: rgba(255, 255, 255, 0.60);
+      }
+
+      button.destructive-action:active {
+        color: rgba(255, 255, 255, 0.45);
+      }
+
+      togglebutton {
+        background: rgba(255, 255, 255, 0.05);
+        color: rgba(255, 255, 255, 0.38);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 14px;
+        min-height: 16px;
+        box-shadow: none;
+        font-size: 9px;
+      }
+
+      togglebutton:checked {
+        background: rgba(255, 255, 255, 0.12);
+        color: rgba(255, 255, 255, 0.88);
+        border-color: rgba(255, 255, 255, 0.10);
+      }
+
+      #clock_frame label {
+        font-size: 56px;
+        font-weight: 300;
+        color: rgba(255, 255, 255, 0.96);
+      }
+
+      infobar {
+        background: rgba(0, 0, 0, 0.35);
+        color: rgba(255, 255, 255, 0.82);
+        border-radius: 14px;
+        border: none;
+      }
+
+      #notif_info {
+        background-color: rgba(255, 255, 255, 0.04);
+        color: rgba(255, 255, 255, 0.80);
+        border-radius: 10px;
+        border: none;
+      }
+    '';
+  };
 
   fonts.packages = with pkgs; [
     noto-fonts
@@ -174,6 +378,24 @@ i18n.inputMethod.fcitx5.ignoreUserConfig = true;
     jetbrains-mono
     nerd-fonts.jetbrains-mono
   ];
+
+  fonts.fontconfig = {
+    defaultFonts = {
+      sansSerif = [ "Noto Sans CJK JP" "Noto Sans" ];
+      serif = [ "Noto Serif" ];
+      monospace = [ "JetBrainsMono Nerd Font" "Noto Sans Mono CJK JP" ];
+      emoji = [ "Noto Color Emoji" ];
+    };
+    subpixel = {
+      rgba = "none";
+      lcdfilter = "none";
+    };
+    hinting = {
+      enable = true;
+      style = "slight";
+    };
+    antialias = true;
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
