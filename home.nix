@@ -4,37 +4,49 @@
   home.username = "eitaar";
   home.homeDirectory = "/home/eitaar";
   home.stateVersion = "24.11";
-  imports = [inputs.ags.homeManagerModules.default];
+
+  imports = [ inputs.ags.homeManagerModules.default ];
+
+  # ── Packages ──
   home.packages = with pkgs; [
     # CLI
-    ripgrep fd eza btop fastfetch
-    pkgs.zed-editor
-    # アプリ
+    ripgrep
+    fd
+    eza
+    btop
+    fastfetch
+
+    # GUI
     kitty
+    zed-editor
     vscode
     discord
   ];
 
-  programs.ags = {
-    enable = true;
-    extraPackages = with pkgs; [
-      inputs.astal.packages.${pkgs.system}.apps
-      inputs.astal.packages.${pkgs.system}.battery
-      inputs.astal.packages.${pkgs.system}.mpris
-      inputs.astal.packages.${pkgs.system}.network
-      inputs.astal.packages.${pkgs.system}.notifd
-      inputs.astal.packages.${pkgs.system}.powerprofiles
-      inputs.astal.packages.${pkgs.system}.tray
-      inputs.astal.packages.${pkgs.system}.wireplumber
-      fzf
-    ];
-  };
+  # ── Cursor ──
   home.pointerCursor = {
     name = "breeze_cursors";
     package = pkgs.kdePackages.breeze;
     size = 24;
     gtk.enable = true;
   };
+
+  # ── AGS ──
+  programs.ags = {
+    enable = true;
+    extraPackages = with inputs.astal.packages.${pkgs.system}; [
+      apps
+      battery
+      mpris
+      network
+      notifd
+      powerprofiles
+      tray
+      wireplumber
+      pkgs.fzf
+    ];
+  };
+
   # ── Zsh ──
   programs.zsh = {
     enable = true;
@@ -59,7 +71,7 @@
       confirm_os_window_close = 0;
       window_padding_width = 8;
 
-      # Catppuccin Mocha カラー
+      # Catppuccin Mocha
       background = "#1e1e2e";
       foreground = "#cdd6f4";
       cursor = "#f5e0dc";
@@ -74,14 +86,6 @@
     };
   };
 
-  # ── Electron Wayland フラグ ──
-  xdg.configFile."electron-flags.conf".text = ''
-    --enable-features=UseOzonePlatform
-    --ozone-platform=wayland
-    --enable-wayland-ime
-  '';
-
-  # ── 通知 ──
-  # shoji-bar-2 が AstalNotifd ベースの通知ポップアップを持つため無効化
+  # ── Notifications ──
   services.mako.enable = false;
 }

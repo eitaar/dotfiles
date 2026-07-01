@@ -3,23 +3,27 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
+
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     helium-browser = {
       url = "github:oxcl/nix-flake-helium-browser";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     shojiwm.url = "github:bea4dev/ShojiWM";
     astal.url = "github:aylur/astal";
     ags.url = "github:aylur/ags";
-    xwayland-satellite-shojiwm.url =
-      "github:bea4dev/xwayland-satellite/shojiwm";
+    xwayland-satellite-shojiwm.url = "github:bea4dev/xwayland-satellite/shojiwm";
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, helium-browser,
-              shojiwm, xwayland-satellite-shojiwm, ags, astal, ... }: {
+  outputs = inputs@{
+    self, nixpkgs, home-manager, helium-browser,
+    shojiwm, xwayland-satellite-shojiwm, ags, astal, ...
+  }: {
     nixosConfigurations.eitaar-nix = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
