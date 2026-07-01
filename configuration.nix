@@ -19,6 +19,7 @@
   nix.settings.max-jobs = 1;
   nix.settings.builders-use-substitutes = true;
   nix.distributedBuilds = true;
+  services.udisks2.enable = true;
   nix.extraOptions = ''
     builders = @/etc/nix/machines
   '';
@@ -136,6 +137,7 @@
     ffmpeg
     swappy
     hyprshot
+    kdePackages.dolphin
   ];
 
   # ── Environment ──
@@ -149,29 +151,30 @@
   };
 
   # ── Fonts ──
-  fonts.packages = with pkgs; [
-    noto-fonts
-    noto-fonts-cjk-sans
-    noto-fonts-color-emoji
-    jetbrains-mono
-    nerd-fonts.jetbrains-mono
-  ];
+  fonts = {
+    packages = with pkgs; [
+      inter
+      noto-fonts
+      noto-fonts-cjk-sans
+      noto-fonts-cjk-serif
+      noto-fonts-color-emoji
+      nerd-fonts.jetbrains-mono
+    ];
 
-  fonts.fontconfig = {
-    antialias = true;
-    defaultFonts = {
-      sansSerif = [ "Noto Sans CJK JP" "Noto Sans" ];
-      serif = [ "Noto Serif" ];
-      monospace = [ "JetBrainsMono Nerd Font" "Noto Sans Mono CJK JP" ];
-      emoji = [ "Noto Color Emoji" ];
-    };
-    hinting = {
+    fontconfig = {
       enable = true;
-      style = "full";
-    };
-    subpixel = {
-      rgba = "none";
-      lcdfilter = "none";
+      antialias = true;
+      hinting.enable = true;
+      hinting.style = "slight";
+      subpixel.rgba = "none";
+      subpixel.lcdfilter = "none";
+
+      defaultFonts = {
+        sansSerif = [ "Noto Sans" "Noto Sans CJK JP" "Noto Color Emoji" ];
+        serif = [ "Noto Serif" "Noto Serif CJK JP" "Noto Color Emoji" ];
+        monospace = [ "JetBrainsMono Nerd Font" "Noto Sans CJK JP" "Noto Color Emoji" ];
+        emoji = [ "Noto Color Emoji" ];
+      };
     };
   };
 
