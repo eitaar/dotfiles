@@ -19,6 +19,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    apple-fonts = {
+      url = "github:Lyndeno/apple-fonts.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     shojiwm.url = "github:bea4dev/ShojiWM";
     astal.url = "github:aylur/astal";
     ags.url = "github:aylur/ags";
@@ -33,6 +38,9 @@
       system = "x86_64-linux";
       modules = [
         ./configuration.nix
+        # SF Pro for hyprlock (and anything else); Apple's official
+        # font DMGs repackaged, not in nixpkgs for licensing reasons
+        { fonts.packages = [ inputs.apple-fonts.packages.x86_64-linux.sf-pro ]; }
         inputs.silentSDDM.nixosModules.default
         {
           programs.silentSDDM = {

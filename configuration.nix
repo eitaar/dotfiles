@@ -185,6 +185,9 @@
     };
   };
 
+  # ── Screen lock (PAM for hyprlock) ──
+  security.pam.services.hyprlock = {};
+
   # ── Login Manager (SDDM) ──
   services.displayManager.sddm = {
     enable = true;
