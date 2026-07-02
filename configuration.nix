@@ -17,7 +17,6 @@
   # ── Nix ──
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nix.settings.max-jobs = 1;
-  nix.settings.builders-use-substitutes = true;
   nix.distributedBuilds = true;
   services.udisks2.enable = true;
   nix.extraOptions = ''
@@ -126,6 +125,10 @@
     flags = [ "--ozone-platform-hint=auto" ];
   };
 
+  programs.steam = {
+    enable = true; 
+  };
+
   # ── Packages ──
   nixpkgs.config.allowUnfree = true;
 
@@ -138,6 +141,7 @@
     swappy
     hyprshot
     kdePackages.dolphin
+    gamescope
   ];
 
   # ── Environment ──
@@ -148,6 +152,7 @@
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
     FREETYPE_PROPERTIES = "cff:no-stem-darkening=0 autofitter:no-stem-darkening=0";
+    XCURSOR_SIZE = "24";
   };
 
   # ── Fonts ──

@@ -58,6 +58,7 @@
       ls = "eza";
       ll = "eza -la";
       rebuild = "sudo nixos-rebuild switch --flake /etc/nixos#eitaar-nix";
+      steam = "steam -cef-disable-gpu -cef-disable-gpu-compositing";
     };
   };
 
